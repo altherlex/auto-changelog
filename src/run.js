@@ -5,7 +5,10 @@ const { fetchRemote } = require('./remote')
 const { fetchTags } = require('./tags')
 const { parseReleases } = require('./releases')
 const { compileTemplate } = require('./template')
-const { parseLimit, readFile, readJson, writeFile, fileExists, updateLog, formatBytes } = require('./utils')
+const { parseLimit, readFile, readJson, writeFile, fileExists, updateLog, formatBytes, parseAzureResponse} = require('./utils')
+const fetch = require('node-fetch')
+const { Headers } = require('node-fetch');
+var base64 = require('base-64')
 
 const DEFAULT_OPTIONS = {
   output: 'CHANGELOG.md',
@@ -26,6 +29,8 @@ const PREPEND_TOKEN = '<!-- auto-changelog-above -->'
 async function getOptions (argv) {
   const options = new Command()
     .option('--input <file>', 'inform a release.json source pre-processed')
+    .option('--azure-api <source>', 'inform azure pull request end')
+    .option('--azure-user <source>', 'inform username:password')
     .option('-o, --output <file>', `output file, default: ${DEFAULT_OPTIONS.output}`)
     .option('-c, --config <file>', `config file location, default: ${DEFAULT_OPTIONS.config}`)
     .option('-t, --template <template>', `specify template to use [compact, keepachangelog, json], default: ${DEFAULT_OPTIONS.template}`)
@@ -87,12 +92,29 @@ async function getLatestVersion (options, tags) {
   return null
 }
 
+async function formatAzureResponse(options) {
+  let headers = new Headers()
+  headers.append('Authorization', 'Basic ' + base64.encode(options.azureUser))
+  const response = await fetch(options.azureApi, { headers: headers })
+
+  const json = await response.json()
+  // await writeFile('azure_reponse.json', JSON.stringify(json, null, 2))
+
+  const releases = parseAzureResponse(json.value)
+  await writeFile('./releases.json', JSON.stringify(releases, null, 2))
+
+  return options
+}
+
 async function run (argv) {
   const options = await getOptions(argv)
   const log = string => options.stdout ? null : updateLog(string)
 
   let releases
-  if (options.input) {
+  if (options.azureApi && options.azureUser) {
+    await formatAzureResponse(options)
+    releases = await readJson('./releases.json')
+  } else if (options.input) {
     releases = await readJson(options.input)
   } else {
     log('Fetching remote…')

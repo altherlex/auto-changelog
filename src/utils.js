@@ -99,6 +99,40 @@ async function readJson (path) {
   return JSON.parse(await readFile(path))
 }
 
+function parseAzureResponse (list) {
+  return list.map(pullRequest => {
+   return {
+      "tag": pullRequest.targetRefName,
+      "title": pullRequest.sourceRefName,
+      "date": pullRequest.closedDate,
+      "isoDate": pullRequest.closedDate,
+      "niceDate": niceDate(pullRequest.closedDate),
+      "commits": [{
+        "hash": pullRequest.lastMergeSourceCommit.commitId,
+        "shorthash": pullRequest.lastMergeSourceCommit.commitId,
+        "author": pullRequest.createdBy.displayName,
+        "email": pullRequest.createdBy.uniqueName,
+        "date": pullRequest.closedDate,
+        "subject": pullRequest.title,
+        "message": pullRequest.description,
+        "fixes": null,
+        "href": `https://dev.azure.com/GetSmartSolutions/The%20Product/_git/${pullRequest.repository.name}/pullrequest/${pullRequest.pullRequestId}`,
+        "breaking": false,
+        "files": 0,
+        "insertions": 0,
+        "deletions": 0,
+        "merge": null
+      }],
+      "merges": [],
+      "fixes": [],
+      "summary": null,
+      "major": true,
+      "href": `https://dev.azure.com/GetSmartSolutions/The%20Product/_git/${pullRequest.repository.name}/pullrequest/${pullRequest.pullRequestId}`
+    }
+  })
+}
+
+
 module.exports = {
   updateLog,
   formatBytes,
@@ -112,5 +146,6 @@ module.exports = {
   readFile,
   writeFile,
   fileExists,
-  readJson
+  readJson,
+  parseAzureResponse
 }

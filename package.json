@@ -43,6 +43,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "base-64": "^0.1.0",
     "commander": "^5.0.0",
     "handlebars": "^4.7.3",
     "lodash.uniqby": "^4.7.0",
