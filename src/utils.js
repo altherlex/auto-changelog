@@ -1,6 +1,7 @@
 const readline = require('readline')
 const fs = require('fs')
 const { spawn } = require('child_process')
+var filter = require('lodash.filter')
 
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
@@ -101,6 +102,9 @@ async function readJson (path) {
 
 function parseAzureResponse (list) {
   const commits = list.map(pullRequest => {
+    const tagName = pullRequest.sourceRefName.replace('refs/heads/', '')
+    const taskSetence = tagName.split('/')[1]
+
     return {
       "niceDate": niceDate(pullRequest.closedDate),
       "hash": pullRequest.lastMergeSourceCommit.commitId,
@@ -108,7 +112,9 @@ function parseAzureResponse (list) {
       "author": pullRequest.createdBy.displayName,
       "email": pullRequest.createdBy.uniqueName,
       "tag": pullRequest.sourceRefName,
-      "tagName": pullRequest.sourceRefName.replace('refs/heads/release/', ''),
+      "branch": tagName,
+      "type": tagName.split('/')[0],
+      "workItemId": taskSetence.split('-')[0],
       "date": pullRequest.closedDate,
       "subject": pullRequest.title,
       "message": pullRequest.description,
@@ -133,9 +139,9 @@ function parseAzureResponse (list) {
     "summary": null,
     "major": true,
     "href": `https://dev.azure.com/GetSmartSolutions/The%20Product/_git/${main.repository.name}/pullrequests?_a=completed&targetRefName=${main.targetRefName}`,
-    "fixes": [],
+    "fixes": filter(commits, {"type": "bug"}),
     "merges": [],
-    "commits": commits
+    "commits": filter(commits, {"type": "feature"})
   }]
 }
 
