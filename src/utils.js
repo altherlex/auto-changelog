@@ -125,7 +125,8 @@ function parseAzureResponse (list) {
   const main = list[0]
   return [{
     "tag": main.targetRefName,
-    "title": main.targetRefName.replace('refs/heads/release/', ''),
+    "title": main.targetRefName.replace('refs/heads/', ''),
+    "version": main.targetRefName.replace('refs/heads/release/', ''),
     "date": main.closedDate,
     "isoDate": main.closedDate,
     "niceDate": niceDate(main.closedDate),
