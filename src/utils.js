@@ -128,17 +128,20 @@ function parseAzureResponse (list) {
     }
   })
 
-  const main = list[0]
+  const latest = list[0]
+  const first = list[list.length - 1]
   return [{
-    "tag": main.targetRefName,
-    "title": main.targetRefName.replace('refs/heads/', ''),
-    "version": main.targetRefName.replace('refs/heads/release/', ''),
-    "date": main.closedDate,
-    "isoDate": main.closedDate,
-    "niceDate": niceDate(main.closedDate),
+    "tag": latest.targetRefName,
+    "title": latest.targetRefName.replace('refs/heads/', ''),
+    "version": latest.targetRefName.replace('refs/heads/release/', ''),
+    "date": latest.closedDate,
+    "isoDate": latest.closedDate,
+    "niceDate": niceDate(latest.closedDate),
+    "niceDateStart": niceDate(first.closedDate),
+    "niceDateEnd": niceDate(latest.closedDate),
     "summary": null,
     "major": true,
-    "href": `https://dev.azure.com/GetSmartSolutions/The%20Product/_git/${main.repository.name}/pullrequests?_a=completed&targetRefName=${main.targetRefName}`,
+    "href": `https://dev.azure.com/GetSmartSolutions/The%20Product/_git/${latest.repository.name}/pullrequests?_a=completed&targetRefName=${latest.targetRefName}`,
     "fixes": filter(commits, {"type": "bug"}),
     "merges": [],
     "commits": filter(commits, {"type": "feature"})
