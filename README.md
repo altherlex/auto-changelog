@@ -1,4 +1,5 @@
-# auto-changelog for Azure Pipeline with Azure Info (fork of [auto-changelog](https://github.com/CookPete/auto-changelog))
+# auto-changelog 
+for Azure Pipeline with Azure Info
 
 This app generates a changelog based on AzureCloud API information inestead of git commits info.
 The content comes from the Pull Requests (title and description) set on AzureDevOps.
@@ -50,7 +51,8 @@ $ ./src/index.js --commit-limit false --output ./CHANGELOG-v.2.4.md --azure-api 
 
 --
 
-# auto-changelog (original)
+# auto-changelog
+[auto-changelog](https://github.com/CookPete/auto-changelog)
 
 Command line tool for generating a changelog from git tags and commit history. Used by [Modernizr](https://modernizr.com), [Netlify](https://netlify.com), [Neutrino](https://neutrinojs.org) and [Velocity.js](http://velocityjs.org).
 
