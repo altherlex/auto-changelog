@@ -1,14 +1,13 @@
 # auto-changelog 
+[![Latest npm version](https://img.shields.io/npm/v/auto-changelog.svg)](https://www.npmjs.com/package/auto-changelog)
+[![Build Status](https://img.shields.io/travis/CookPete/auto-changelog/master.svg)](https://travis-ci.org/CookPete/auto-changelog)
+[![Test Coverage](https://img.shields.io/codecov/c/github/cookpete/auto-changelog.svg)](https://codecov.io/gh/CookPete/auto-changelog)
+
 for Azure Pipeline with Azure Info
 
 This app generates a changelog based on AzureCloud API information inestead of git commits info.
 
 The content comes from the Pull Requests (title and description) set on AzureDevOps.
-
-[![Latest npm version](https://img.shields.io/npm/v/auto-changelog.svg)](https://www.npmjs.com/package/auto-changelog)
-[![Build Status](https://img.shields.io/travis/CookPete/auto-changelog/master.svg)](https://travis-ci.org/CookPete/auto-changelog)
-[![Test Coverage](https://img.shields.io/codecov/c/github/cookpete/auto-changelog.svg)](https://codecov.io/gh/CookPete/auto-changelog)
-
 
 ## How to set it up on Azure pipeline and submission to Azure Wiki:
 
@@ -49,7 +48,7 @@ sudo git push
 
 ## Running it locally
 
-```bash
+```
 $ git clone https://github.com/altherlex/auto-changelog.git
 $ cd auto-changelog
 $ ./src/index.js --commit-limit false --output ./CHANGELOG-v.2.4.md --azure-api 'https://dev.azure.com/<organization_name>/<app_name>/_apis/git/pullrequests?api-version=5.1&searchCriteria.targetRefName=<branch_name>&searchCriteria.status=completed&$top=10' --azure-user <user>:<token_password>
