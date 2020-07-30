@@ -48,10 +48,14 @@ sudo git push
 
 ## Running it locally
 
-```
+```bash
 $ git clone https://github.com/altherlex/auto-changelog.git
 $ cd auto-changelog
-$ ./src/index.js --commit-limit false --output ./CHANGELOG-v.2.4.md --azure-api 'https://dev.azure.com/<organization_name>/<app_name>/_apis/git/pullrequests?api-version=5.1&searchCriteria.targetRefName=<branch_name>&searchCriteria.status=completed&$top=10' --azure-user <user>:<token_password>
+$ ./src/index.js \ 
+  --commit-limit false \
+  --output ./CHANGELOG-v.2.4.md \
+  --azure-api 'https://dev.azure.com/<organization_name>/<app_name>/_apis/git/pullrequests?api-version=5.1&searchCriteria.targetRefName=<branch_name>&searchCriteria.status=completed&$top=10' \
+  --azure-user <user>:<token_password>
 ```
 
 ---
