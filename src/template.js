@@ -1,5 +1,8 @@
 const { join } = require('path')
 const Handlebars = require('handlebars')
+const helpers = require('handlebars-helpers')({
+  handlebars: Handlebars
+})
 const fetch = require('node-fetch')
 const { readFile, fileExists } = require('./utils')
 

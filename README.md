@@ -58,6 +58,10 @@ $ ./src/index.js \
   --azure-user <user>:<token_password>
 ```
 
+## It supports handlebars-helpers 
+
+Use any of these great [helpers](https://github.com/helpers/handlebars-helpers) on your template.
+
 ---
 
 Fork from [auto-changelog](https://github.com/CookPete/auto-changelog)
