@@ -1,4 +1,56 @@
-# auto-changelog
+# auto-changelog for Azure Pipeline with Azure Info (fork of [auto-changelog](https://github.com/CookPete/auto-changelog))
+
+This app generates a changelog based on AzureCloud API information inestead of git commits info.
+The content comes from the Pull Requests (title and description) set on AzureDevOps.
+
+## How to set it up on Azure pipeline and submission to Azure Wiki:
+
+```bash
+#!/bin/sh
+#
+# This script should be run via curl:
+#   sh -c "$(curl -fsSL https://gist.githubusercontent.com/altherlex/15315bebfd9bc65ffb02fad8f899b6a6/raw/azure-auto-changelog.sh)"
+# or wget:
+#   sh -c "$(wget -qO- https://gist.githubusercontent.com/altherlex/15315bebfd9bc65ffb02fad8f899b6a6/raw/azure-auto-changelog.sh)"
+export FILE_NAME=CHANGELOG-v.$RELEASE_VERSION.md 
+export TEMPLATE_URL=https://gist.githubusercontent.com/altherlex/5f20de7a31b08be82974f8e620310b74/raw/changelog-template.hbs
+export AZURE_URL=https://dev.azure.com/<your_organization>/<your_app_name>/_apis/git/pullrequests
+export API_TARGETREFNAME=refs/heads/release/${RELEASE_VERSION}
+export API_STATUS=completed
+export API_TOP=10000
+
+sudo /usr/local/bin/npm install -g git+https://github.com/altherlex/auto-changelog.git
+
+sudo auto-changelog \
+    --commit-limit false \
+    --tag-pattern $RELEASE_VERSION.* \
+    --output ~/$FILE_NAME \
+    --azure-api "${AZURE_URL}?api-version=5.1&searchCriteria.targetRefName=${API_TARGETREFNAME}&searchCriteria.status=${API_STATUS}&$top=${API_TOP}" \
+    --azure-user $USER@<your_organization>.ca:$PASSWORD \
+    --template $TEMPLATE_URL 
+
+cd ..
+
+sudo git clone https://$USER:$PASSWORD@dev.azure.com/<your_organization>/<your_app_name>/_git/<your_wiki_dir>.wiki
+
+sudo mv ~/$FILE_NAME <your_wiki_dir>.wiki/Changlogs/.
+cd <your_wiki_dir>.wiki
+
+sudo git add . && sudo git commit -m 'add file '$FILE_NAME
+sudo git push
+```
+
+## Running it locally
+
+```bash
+$ git clone https://github.com/altherlex/auto-changelog.git
+$ cd auto-changelog
+$ ./src/index.js --commit-limit false --output ./CHANGELOG-v.2.4.md --azure-api 'https://dev.azure.com/<organization_name>/<app_name>/_apis/git/pullrequests?api-version=5.1&searchCriteria.targetRefName=<branch_name>&searchCriteria.status=completed&$top=10' --azure-user <user>:<token_password>
+```
+
+--
+
+# auto-changelog (original)
 
 Command line tool for generating a changelog from git tags and commit history. Used by [Modernizr](https://modernizr.com), [Netlify](https://netlify.com), [Neutrino](https://neutrinojs.org) and [Velocity.js](http://velocityjs.org).
 
