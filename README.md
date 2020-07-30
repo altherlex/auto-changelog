@@ -2,6 +2,7 @@
 for Azure Pipeline with Azure Info
 
 This app generates a changelog based on AzureCloud API information inestead of git commits info.
+
 The content comes from the Pull Requests (title and description) set on AzureDevOps.
 
 ## How to set it up on Azure pipeline and submission to Azure Wiki:
@@ -49,10 +50,11 @@ $ cd auto-changelog
 $ ./src/index.js --commit-limit false --output ./CHANGELOG-v.2.4.md --azure-api 'https://dev.azure.com/<organization_name>/<app_name>/_apis/git/pullrequests?api-version=5.1&searchCriteria.targetRefName=<branch_name>&searchCriteria.status=completed&$top=10' --azure-user <user>:<token_password>
 ```
 
---
+---
+
+Fork from [auto-changelog](https://github.com/CookPete/auto-changelog)
 
 # auto-changelog
-[auto-changelog](https://github.com/CookPete/auto-changelog)
 
 Command line tool for generating a changelog from git tags and commit history. Used by [Modernizr](https://modernizr.com), [Netlify](https://netlify.com), [Neutrino](https://neutrinojs.org) and [Velocity.js](http://velocityjs.org).
 
