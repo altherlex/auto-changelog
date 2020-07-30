@@ -5,6 +5,11 @@ This app generates a changelog based on AzureCloud API information inestead of g
 
 The content comes from the Pull Requests (title and description) set on AzureDevOps.
 
+[![Latest npm version](https://img.shields.io/npm/v/auto-changelog.svg)](https://www.npmjs.com/package/auto-changelog)
+[![Build Status](https://img.shields.io/travis/CookPete/auto-changelog/master.svg)](https://travis-ci.org/CookPete/auto-changelog)
+[![Test Coverage](https://img.shields.io/codecov/c/github/cookpete/auto-changelog.svg)](https://codecov.io/gh/CookPete/auto-changelog)
+
+
 ## How to set it up on Azure pipeline and submission to Azure Wiki:
 
 ```bash
